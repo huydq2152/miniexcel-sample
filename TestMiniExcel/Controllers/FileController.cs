@@ -15,7 +15,7 @@ public class FileController: ControllerBase
         _tempFileCacheManager = tempFileCacheManager;
     }
 
-    [HttpGet("download-temp-file")]
+    [HttpPost("download-temp-file")]
     public async Task<ActionResult> DownloadTempFile(FileDto file)
     {
         var fileBytes = await _tempFileCacheManager.GetFile(file.FileToken);

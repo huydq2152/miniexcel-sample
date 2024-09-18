@@ -16,22 +16,24 @@ public class TodoController : ControllerBase
         _todoListExcelExporter = todoListExcelExporter;
     }
 
-    [HttpGet]
+    [HttpGet("todos")]
     public IActionResult GetTodos()
     {
         var todos = ExportTodoDto.GetList();
         return Ok(todos);
     }
 
-    [HttpGet("todos-to-excel")]
-    public async Task<FileDto> GetTodosToExcel(GetTodosToExcelInput input)
+    [HttpPost("todos-to-excel")]
+    public async Task<ActionResult<FileDto>> GetTodosToExcel(GetTodosToExcelInput input)
     {
         var todos = ExportTodoDto.GetList().Where(x => x.IsComplete == input.IsComplete).ToList();
         if (todos.Count == 0)
         {
             return new FileDto();
         }
+        
+        var file = _todoListExcelExporter.ExportToFile(todos);
 
-        return _todoListExcelExporter.ExportToFile(todos);
+        return Ok(file);
     }
 }

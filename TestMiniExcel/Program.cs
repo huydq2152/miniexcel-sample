@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Caching.Distributed;
+using TestMiniExcel.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDistributedMemoryCache();
+
+builder.Services.AddServices();
 
 var app = builder.Build();
 
