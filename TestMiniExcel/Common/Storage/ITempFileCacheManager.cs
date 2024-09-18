@@ -6,8 +6,8 @@
 
         Task<byte[]> GetFile(string token);
 
-        // Task SetFile(string token, TempFileInfo info);
-        //
-        // Task<TempFileInfo> GetFileInfo(string token);
+        Task SetFile(string token, TempFileInfo info);
+        
+        Task<TempFileInfo> GetFileInfo(string token);
     }
 }

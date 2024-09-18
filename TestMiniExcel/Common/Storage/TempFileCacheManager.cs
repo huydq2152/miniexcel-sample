@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
+using TestMiniExcel.Extensions;
 
 namespace TestMiniExcel.Common.Storage
 {
@@ -24,14 +25,21 @@ namespace TestMiniExcel.Common.Storage
             return await _cache.GetAsync(token);
         }
 
-        // public void SetFile(string token, TempFileInfo info)
-        // {
-        //     _cache.Set(token, info, TimeSpan.FromMinutes(1));
-        // }
-        //
-        // public TempFileInfo GetFileInfo(string token)
-        // {
-        //     return _cache.GetOrDefault(token);
-        // }
+        public async Task SetFile(string token, TempFileInfo info)
+        {
+            var cacheEntryOptions = new DistributedCacheEntryOptions()
+                .SetAbsoluteExpiration(TimeSpan.FromMinutes(1));
+            await _cache.SetAsync(token, info, cacheEntryOptions);
+        }
+        
+        public async Task<TempFileInfo> GetFileInfo(string token)
+        {
+            if (_cache.TryGetValue(token, out TempFileInfo? fileInfo))
+            {
+                return fileInfo;
+            }
+
+            return null; 
+        }
     }
 }
