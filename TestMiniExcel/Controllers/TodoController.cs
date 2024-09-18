@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MiniExcelLibs;
+using TestMiniExcel.Common.Dtos;
 using TestMiniExcel.Models;
+using TestMiniExcel.Services;
 
 namespace TestMiniExcel.Controllers;
 
@@ -8,26 +9,29 @@ namespace TestMiniExcel.Controllers;
 [Route("api/[controller]")]
 public class TodoController : ControllerBase
 {
+    private readonly ITodoListExcelExporter _todoListExcelExporter;
+
+    public TodoController(ITodoListExcelExporter todoListExcelExporter)
+    {
+        _todoListExcelExporter = todoListExcelExporter;
+    }
+
     [HttpGet]
     public IActionResult GetTodos()
     {
-        var todos = Todo.GetList();
+        var todos = ExportTodoDto.GetList();
         return Ok(todos);
     }
 
-    [HttpGet("export")]
-    public async Task<IActionResult> ExportTodos([FromQuery] bool isComplete, CancellationToken token)
+    [HttpGet("todos-to-excel")]
+    public async Task<FileDto> GetTodosToExcel(GetTodosToExcelInput input)
     {
-        var filteredList = Todo.GetList().Where(x => x.IsComplete == isComplete).ToList();
-        if (filteredList.Count == 0)
+        var todos = ExportTodoDto.GetList().Where(x => x.IsComplete == input.IsComplete).ToList();
+        if (todos.Count == 0)
         {
-            return NotFound();
+            return new FileDto();
         }
 
-        var memoryStream = new MemoryStream();
-        await memoryStream.SaveAsAsync(filteredList, cancellationToken: token);
-        memoryStream.Seek(0, SeekOrigin.Begin);
-
-        return File(memoryStream, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "todos.xlsx");
+        return _todoListExcelExporter.ExportToFile(todos);
     }
 }

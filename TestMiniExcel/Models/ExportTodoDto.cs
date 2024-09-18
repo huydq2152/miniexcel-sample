@@ -2,7 +2,7 @@ using MiniExcelLibs.Attributes;
 
 namespace TestMiniExcel.Models;
 
-public class Todo
+public class ExportTodoDto
 {
     [ExcelColumn(Name = "Id", Index = 0, Width = 40)]
     public Guid Id { get; set; }
@@ -13,26 +13,30 @@ public class Todo
     [ExcelColumn(Ignore = true)]
     public bool IsComplete { get; set; }
 
-    public static IEnumerable<Todo> GetList()
+    public static IEnumerable<ExportTodoDto> GetList()
     {
-        return new List<Todo>()
+        return new List<ExportTodoDto>()
         {
-            new Todo{
+            new()
+            {
                 Id = Guid.NewGuid(),
                 Title = "Write an article about export excel.",
                 IsComplete = true
             },
-            new Todo{
+            new()
+            {
                 Id = Guid.NewGuid(),
                 Title = "Code review: davidfowl/TodoApi",
                 IsComplete = true
             },
-            new Todo{
+            new()
+            {
                 Id = Guid.NewGuid(),
                 Title = "Read 'Implementing Domain Driven Design' book. https://abp.io/books/implementing-domain-driven-design",
                 IsComplete = true
             },
-            new Todo{
+            new()
+            {
                 Id = Guid.NewGuid(),
                 Title = "Make a plan for next week.",
                 IsComplete = false
