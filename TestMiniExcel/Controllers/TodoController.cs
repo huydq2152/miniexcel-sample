@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using TestMiniExcel.Common.Dtos;
-using TestMiniExcel.Models;
+using TestMiniExcel.Models.Exporting;
 using TestMiniExcel.Services;
+using TestMiniExcel.Services.Exporting.Interfaces;
 
 namespace TestMiniExcel.Controllers;
 
@@ -23,8 +24,8 @@ public class TodoController : ControllerBase
         return Ok(todos);
     }
 
-    [HttpPost("todos-to-excel")]
-    public async Task<ActionResult<FileDto>> GetTodosToExcel(GetTodosToExcelInput input)
+    [HttpPost("export-todos")]
+    public async Task<ActionResult<FileDto>> GetExportTodos(GetExportTodosInput input)
     {
         var todos = ExportTodoDto.GetList().Where(x => x.IsComplete == input.IsComplete).ToList();
         if (todos.Count == 0)

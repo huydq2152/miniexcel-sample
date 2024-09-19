@@ -1,6 +1,6 @@
 using MiniExcelLibs.Attributes;
 
-namespace TestMiniExcel.Models;
+namespace TestMiniExcel.Models.Exporting;
 
 public class ExportTodoDto
 {

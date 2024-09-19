@@ -1,9 +1,10 @@
-﻿using TestMiniExcel.Common.Dtos;
-using TestMiniExcel.Common.Services;
+﻿using TestMiniExcel.Common.Abstracts.Exporting;
+using TestMiniExcel.Common.Dtos;
 using TestMiniExcel.Common.Storage;
-using TestMiniExcel.Models;
+using TestMiniExcel.Models.Exporting;
+using TestMiniExcel.Services.Exporting.Interfaces;
 
-namespace TestMiniExcel.Services
+namespace TestMiniExcel.Services.Exporting
 {
     public class TodoListExcelExporter : MiniExcelExcelExporterBase, ITodoListExcelExporter
     {
